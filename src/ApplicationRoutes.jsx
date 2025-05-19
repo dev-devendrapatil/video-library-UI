@@ -4,6 +4,7 @@ import Dashboard from "./Components/Dashboard/Dashboard";
 import Layout from "./Common/Layout";
 import Login from "./Components/Login/Login";
 import SignUp from "./Components/SignUp/SignUp";
+import EditUser from "./Components/EditUser/EditUser";
 
 const ApplicationRoutes = () => {
   return (
@@ -12,9 +13,9 @@ const ApplicationRoutes = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-
           <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
+          <Route index element={<Dashboard />} />
+          <Route path="/edit-user" element={<EditUser />} />
           </Route>
         </Routes>
       </Suspense>
