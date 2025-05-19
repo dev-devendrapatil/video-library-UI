@@ -1,15 +1,16 @@
 import React, { Suspense } from 'react'
-import { Route, Router, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Dashboard from './Components/Dashboard/Dashboard'
 
 const ApplicationRoutes = () => {
   return (
-    <Router>
+    <BrowserRouter>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Dashboard />} />
         </Routes>
       </Suspense>
-    </Router>  )
+    </BrowserRouter>  )
 }
 
 export default ApplicationRoutes
