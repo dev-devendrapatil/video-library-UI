@@ -1,18 +1,12 @@
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL 
+const API_BASE_URL = "http://localhost:3000/api/v1/"
 
 const defaultHeaders = {
   'Content-Type': 'application/json',
 };
 
 const handleResponse = async (response) => {
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    const error = new Error(response.statusText);
-    error.status = response.status;
-    error.data = errorData;
-    throw error;
-  }
+
   return response.json();
 };
 
@@ -20,6 +14,7 @@ const APIService = {
   get: (url, options = {}) =>
     fetch(`${API_BASE_URL}${url}`, {
       method: 'GET',
+      credentials: "include",
       headers: defaultHeaders,
       ...options,
     }).then(handleResponse),
@@ -27,6 +22,7 @@ const APIService = {
   post: (url, data = {}, options = {}) =>
     fetch(`${API_BASE_URL}${url}`, {
       method: 'POST',
+      credentials: "include",
       headers: defaultHeaders,
       body: JSON.stringify(data),
       ...options,

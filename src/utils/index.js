@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 
 const UTILITY = {
 TOST: (type, message) => {
