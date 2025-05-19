@@ -31,7 +31,6 @@ const Login = () => {
 
   const onSubmit = (data) => {
     setLoading(true);
-    console.log("data", data);
     const payload = {
       password: data.password,
     };
@@ -47,7 +46,7 @@ const Login = () => {
           UTILITY.TOST("error", res.message);
         } else {
           UTILITY.TOST("success", res.message);
-          navigate("/dashboard");
+          navigate("/");
         }
         setLoading(false);
       })

@@ -197,7 +197,7 @@ const SignUp = () => {
               </ul>
             </div>
           )}
-          <img src="/icons/logo.svg" className="mx-auto px-10 max-w-[180px]" />
+          <img src="/icons/logo.svg" className="mx-auto px-10 " />
           <h1 className="text-4xl font-extrabold text-white text-center leading-snug mt-4">
             Join the Future <br /> Create Your Account 🚀
           </h1>
