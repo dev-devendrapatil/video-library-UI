@@ -32,12 +32,17 @@ const Header = () => {
       if (res.statusCode === 200) {
         setIsUserLoggedIn(false);
         setUser(null);
+        setIsOpen(false)
         navigate("/login");
       } else {
         UTILITY.TOST("error", res.message);
       }
     });
   };
+const handleEditUser = ()=>{
+navigate("/edit-user")
+setIsOpen(false)
+}
 
   return (
     <header className="sticky inset-x-0 top-0 z-50 w-full border-b border-white bg-[#121212] px-4">
@@ -95,7 +100,7 @@ const Header = () => {
                   <div className="absolute right-0 top-16 w-44 bg-[#2a2a2a]  rounded-2xl shadow-lg bg- z-50">
                     <button
                       className="block w-full text-left px-4 py-2 rounded-t-2xl text-sm text-white hover:bg-[#3a3a3a]"
-                      onClick={() => navigate("/edit-user")}
+                      onClick={() => handleEditUser()}
                     >
                       Edit User
                     </button>
