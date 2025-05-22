@@ -7,6 +7,7 @@ import EditPersonalDetails from "./EditPersonalDetails.jsx";
 import Loader from "../../Common/Loader.jsx";
 import EditChannelDetails from "./EditChannelDetails.jsx";
 import EditPasswordDetails from "./EditPasswordDetails.jsx";
+import UserVideo from "../EditChannel/UserVideo.jsx";
 export const Tab = ({ selectedTab, setSelectedTab, value }) => {
   return (
     <button
@@ -99,6 +100,9 @@ useEffect(() => {
         {selectedTab === "Change Password" && user && (
           <EditPasswordDetails getUserDetails={getUserDetails} />
         )}
+        {
+          selectedTab==="Videos"&&<UserVideo/>
+        }
       </div>
     </div>
   );
