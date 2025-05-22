@@ -25,7 +25,14 @@ const APIService = {
       body: JSON.stringify(data),
       ...options,
     }).then(handleResponse),
-
+  postFormData: (url, data = {}, options = {}, headers) =>
+    fetch(`${API_BASE_URL}${url}`, {
+      method: "POST",
+      credentials: "include",
+      headers: {},
+      body: data,
+      ...options,
+    }).then(handleResponse),
   put: (url, data = {}, options = {}) =>
     fetch(`${API_BASE_URL}${url}`, {
       method: "PUT",

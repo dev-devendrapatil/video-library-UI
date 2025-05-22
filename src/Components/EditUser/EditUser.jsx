@@ -7,10 +7,47 @@ import EditPersonalDetails from "./EditPersonalDetails.jsx";
 import Loader from "../../Common/Loader.jsx";
 import EditChannelDetails from "./EditChannelDetails.jsx";
 import EditPasswordDetails from "./EditPasswordDetails.jsx";
+export const Tab = ({ selectedTab, setSelectedTab, value }) => {
+  return (
+    <button
+      className={` py-2.5 w-full ${selectedTab == value ? " bg-white text-[#ae7aff] border-b-2 border-b-[#ae7aff]" : "text-gray-400"}`}
+      onClick={() => setSelectedTab(value)}
+    >
+      {value}
+    </button>
+  );
+};
+const tabs = [
+  {
+    title: "Personal Information",
+    type: "edit-user",
+  },
+  {
+    title: "Channel Information",
+    type: "edit-user",
+  },
+  {
+    title: "Change Password",
+    type: "edit-user",
+  },
+  {
+    title:"Videos",
+    type:"edit-channel"
+  },
+    {
+    title:"Playlist",
+    type:"edit-channel"
+  },
 
+    {
+    title:"Subscribed",
+    type:"edit-channel"
+  }
+];
 const EditUser = () => {
   const { user, setUser } = useContext(AppContext);
   const [selectedTab, setSelectedTab] = useState("Personal Information");
+  const [editType, setEditType] = useState("edit-user");
   const navigate = useNavigate();
   const getUserDetails = () => {
     userAPI.getUserDetails().then((res) => {
@@ -25,42 +62,43 @@ const EditUser = () => {
   useEffect(() => {
     getUserDetails();
   }, []);
+useEffect(() => {
+ if(editType=="edit-user"){
+  setSelectedTab("Personal Information")
+ }
+ else{
+  setSelectedTab("Videos")
+ }
+}, [editType])
 
+  
   return (
     <div className="w-full ">
-      <UserBanner getUserDetails={getUserDetails} />
+      <UserBanner getUserDetails={getUserDetails} editType={editType} setEditType={setEditType} />
       {!user && <Loader />}
       <div className="p-4 w-full">
-      <div className="grid mt-32 grid-cols-3 gap-2 w-full border-b py-1">
-        <button
-          className={` py-2.5 w-full ${selectedTab == "Personal Information" ? " bg-white text-[#ae7aff] border-b-2 border-b-[#ae7aff]" : "text-gray-400"}`}
-          onClick={() => setSelectedTab("Personal Information")}
-        >
-          Personal Information
-        </button>
-        <button
-          className={` py-2.5 w-full ${selectedTab == "Channel Information" ? " bg-white text-[#ae7aff] border-b-2 border-b-[#ae7aff]" : "text-gray-400"}`}
-          onClick={() => setSelectedTab("Channel Information")}
-        >
-          Channel Information
-        </button>
-
-        <button
-          className={` py-2.5 w-full ${selectedTab == "Change Password" ? " bg-white text-[#ae7aff] border-b-2 border-b-[#ae7aff]" : "text-gray-400"}`}
-          onClick={() => setSelectedTab("Change Password")}
-        >
-          Change Password
-        </button>
-      </div>
-      {selectedTab === "Personal Information" && user && (
-        <EditPersonalDetails getUserDetails={getUserDetails} />
-      )}
-      {selectedTab === "Channel Information" && user && (
-        <EditChannelDetails getUserDetails={getUserDetails} />
-      )}
-      {selectedTab === "Change Password" && user && (
-        <EditPasswordDetails getUserDetails={getUserDetails} />
-      )}
+        <div className="grid mt-32 grid-cols-3 gap-2 w-full border-b py-1">
+          {tabs
+            .filter((item) => item.type === editType)
+            .map((item) => (
+              <React.Fragment key={item.title}>
+              <Tab
+                selectedTab={selectedTab}
+                setSelectedTab={setSelectedTab}
+                value={item.title}
+              />
+              </React.Fragment>
+            ))}
+        </div>
+        {selectedTab === "Personal Information" && user && (
+          <EditPersonalDetails getUserDetails={getUserDetails} />
+        )}
+        {selectedTab === "Channel Information" && user && (
+          <EditChannelDetails getUserDetails={getUserDetails} />
+        )}
+        {selectedTab === "Change Password" && user && (
+          <EditPasswordDetails getUserDetails={getUserDetails} />
+        )}
       </div>
     </div>
   );

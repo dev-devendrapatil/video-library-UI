@@ -3,24 +3,32 @@ import { AppContext } from "../../Context/AppContext";
 import userAPI from "../../Service/userApi.service";
 import Loader from "../../Common/Loader";
 import UTILITY from "../../utils";
+import { MdEdit } from "react-icons/md";
+import { TbDeviceTvOld } from "react-icons/tb";
+import { FaVideo } from "react-icons/fa";
+import UploadVideoModal from "../../Channel/UploadVideoModal/UploadVideoModal";
 
-const UserBanner = ({getUserDetails}) => {
+const UserBanner = ({ getUserDetails, editType, setEditType }) => {
   const { user } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
   const avatarImageRef = useRef(null);
+  const [uploadVideoModal, setUploadVideoModal] = useState(false)
   const handleBannerImage = (img) => {
     setIsLoading(true);
     if (img) {
       const formData = new FormData();
       formData.append("coverImage", img);
-      userAPI.updateCoverImage(formData).then((res) => {
-        setIsLoading(false);
-        getUserDetails()
-      }).catch((error)=>{
-         UTILITY.TOST("error",error.message)
-         setIsLoading(false)
-      });;
+      userAPI
+        .updateCoverImage(formData)
+        .then((res) => {
+          setIsLoading(false);
+          getUserDetails();
+        })
+        .catch((error) => {
+          UTILITY.TOST("error", error.message);
+          setIsLoading(false);
+        });
     }
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -31,18 +39,23 @@ const UserBanner = ({getUserDetails}) => {
     if (img) {
       const formData = new FormData();
       formData.append("avatar", img);
-      userAPI.updateAvatarImage(formData).then((res) => {
-        setIsLoading(false);
-        getUserDetails()
-      }).catch((error)=>{
-         UTILITY.TOST("error",error.message)
-         setIsLoading(false)
-      });
+      userAPI
+        .updateAvatarImage(formData)
+        .then((res) => {
+          setIsLoading(false);
+          getUserDetails();
+        })
+        .catch((error) => {
+          UTILITY.TOST("error", error.message);
+          setIsLoading(false);
+        });
     }
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-    
+  };
+  const handleButtonClick = () => {
+    setEditType(editType == "edit-user" ? "edit-channel" : "edit-user");
   };
   return (
     <div
@@ -93,10 +106,29 @@ const UserBanner = ({getUserDetails}) => {
             <span className="opacity-75 font-light">@{user?.userName}</span>
           </div>
         </div>
-        <button className="mr-1 w-full bg-[#ae7aff] mt-10 px-3 py-2 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e] sm:w-auto">
-          View Channel{" "}
-        </button>
+        <div className="flex items-center gap-2">
+          {editType === "edit-channel" && (
+            <button className="mr-1 w-full flex items-center gap-2 bg-[#ae7aff] mt-10 px-3 py-2 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e] sm:w-auto" onClick={()=>setUploadVideoModal(true)}>
+              {" "}
+              <FaVideo className="text-xl" />
+              Upload Video
+            </button>
+          )}
+          <button
+            className="mr-1 w-full bg-[#ae7aff] flex items-center gap-1 mt-10 px-3 py-2 text-center font-bold text-black shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e] sm:w-auto"
+            onClick={() => handleButtonClick()}
+          >
+            {editType === "edit-user" ? (
+              <TbDeviceTvOld className="text-xl" />
+            ) : (
+              <MdEdit className="text-2xl" />
+            )}
+
+            {editType === "edit-user" ? "View Channel" : "Edit User"}
+          </button>
+        </div>
       </div>
+      <UploadVideoModal isModalOpen={uploadVideoModal} setIsModalOpen={setUploadVideoModal}/>
     </div>
   );
 };
