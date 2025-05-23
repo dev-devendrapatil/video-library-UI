@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ModalWrapper from "../../Common/ModalWrapper";
 import { useForm } from "react-hook-form";
 import Joi from "joi";
@@ -7,6 +7,7 @@ import { FiUpload } from "react-icons/fi";
 import { ImSpinner2 } from "react-icons/im";
 import videoAPI from "../../Service/videoAPI.service";
 import UTILITY from "../../utils";
+import { AppContext } from "../../Context/AppContext";
 
 const schema = Joi.object({
   video: Joi.object().required().messages({
@@ -32,19 +33,22 @@ const UploadVideoModal = ({ isModalOpen, setIsModalOpen }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [videoPreview, setVideoPreview] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
-
+  const { setUploadedVideo ,uploadedVideo} = useContext(AppContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
-    reset
+    reset,
   } = useForm({
     resolver: joiResolver(schema),
     defaultValues: {
       isPublished: false,
     },
   });
+useEffect(() => {
+ console.log("uploadedVideo",uploadedVideo)
+}, [uploadedVideo])
 
   const onSubmit = async (data) => {
     try {
@@ -56,16 +60,17 @@ const UploadVideoModal = ({ isModalOpen, setIsModalOpen }) => {
       formData.append("videoFile", data.video);
       formData.append("thumbnail", data.thumbnail);
 
-      await videoAPI.uploadVideo(formData).then((res)=>{{
-        if(res.success===true){
-        UTILITY.TOST("success",res.message)
-
+      await videoAPI.uploadVideo(formData).then((res) => {
+        {
+          if (res.success === true) {
+            UTILITY.TOST("success", res.message);
+            console.log("here",res)
+            setUploadedVideo(res.data)
+          } else {
+            UTILITY.TOST("error", res.message);
+          }
         }
-        else{
-                  UTILITY.TOST("error",res.message)
-
-        }
-      }});
+      });
       setIsModalOpen(false);
     } catch (err) {
       console.error("Upload failed", err);
@@ -95,8 +100,8 @@ const UploadVideoModal = ({ isModalOpen, setIsModalOpen }) => {
   };
   useEffect(() => {
     if (!isModalOpen) {
-      reset();
-      setVideoPreview(null);
+      // reset();
+      // setVideoPreview(null);
     }
   }, [isModalOpen, reset]);
   return (
