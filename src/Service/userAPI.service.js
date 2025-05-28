@@ -8,7 +8,9 @@ const userAPI = {
   getUserDetails:()=>APIService.get("users/userDetails"),
   updateUserDetails:(payload)=>APIService.patch("users/updateUser",payload),
   updateAvatarImage:(formData)=>APIService.patchFormData("users/updateAvatar",formData),
-  updateCoverImage:(formData)=>APIService.patchFormData("users/updateCoverImage",formData)
+  updateCoverImage:(formData)=>APIService.patchFormData("users/updateCoverImage",formData),
+  watchHistory:()=>APIService.get('users/history'),
+  getChannelDetails:(channelId)=>APIService.get(`users/channelDetails/${channelId}`)
 };
 
 export default userAPI;
